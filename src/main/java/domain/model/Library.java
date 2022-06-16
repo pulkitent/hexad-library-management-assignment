@@ -9,7 +9,11 @@ public class Library {
     this.books = books;
   }
 
-  List<String> showBooks() {
-    return books;
+  public List<String> showBooks() {
+    return this.books;
+  }
+
+  public void removeBook(String book) {
+    this.books.remove(book);
   }
 }
