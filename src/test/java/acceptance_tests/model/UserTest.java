@@ -81,4 +81,30 @@ class UserTest {
     user.borrowABook(actualBooksInLibrary.get(0));
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
   }
+
+  @Test
+  @DisplayName("Given there are 2 books in library and user borrow limit is reached, when a user chose to borrow a book then that book should not be added into his borrow list")
+  void testBorrowABook_ShouldNotAddBookToBorrowedListWhenUserBorrowListHasAlreadyTwoBooks() {
+    //Given
+    String book = "Clean-Code-by-UncleBob";
+    String anotherBook = "Refactoring-by-Martin";
+    String thirdBook = "Desigining Data Intensive Application By Martin";
+    List<String> expectedBooks = new LinkedList<>();
+    expectedBooks.add(book);
+    expectedBooks.add(anotherBook);
+    expectedBooks.add(thirdBook);
+    List<String> borrowList = new LinkedList<>();
+    borrowList.add(book);
+    borrowList.add(anotherBook);
+    Library library = new Library(expectedBooks);
+    User user = new User(library, borrowList);
+
+    //When
+    List<String> actualBooksInLibrary = user.viewBooks();
+
+    //Then
+    user.borrowABook(actualBooksInLibrary.get(2));
+    Assertions.assertFalse(user.isBorrowedBookListEmpty());
+    Assertions.assertEquals(2, user.getNumberOfBorrowedBooks());
+  }
 }
