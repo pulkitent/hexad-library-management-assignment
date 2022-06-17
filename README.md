@@ -29,7 +29,7 @@ This assignment purpose is to showcase my clean code & best engineering practice
 6. Didn't make interfaces as per YAGNI principles because for now, I don't feel the need for the same PS: Yes, I am
    aware of this principle also - "Program to interface rather than concrete implementation"
 
-## Thoughts/Assumptions (might differ from people to people)
+## Thoughts/Assumptions (might differ from person to person)
 
 1. I could have also created Book.java as it was noun in problem statement but somehow I didn't feel right to have that
    because that model was very anaemic (Having no behaviours in it)
