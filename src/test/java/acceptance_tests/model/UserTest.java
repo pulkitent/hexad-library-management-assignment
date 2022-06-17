@@ -79,17 +79,17 @@ class UserTest {
     books.add(anotherBook);
     Library library = new Library(books);
     User user = new User(library);
-    List<String> actualBooksInLibrary = user.viewBooks();
 
     //When
-    user.borrowABook(actualBooksInLibrary.get(0));
+    user.borrowABook(user.viewBooks().get(0));
 
     //Then
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
+    Assertions.assertEquals(1, user.viewBooks().size());
   }
 
   @Test
-  @DisplayName("Given there are 3 books in library and user borrow limit is reached" +
+  @DisplayName("Given there are 3 books in library and user borrow limit is reached (having two books already)" +
       "when a user chooses to borrow a book " +
       "then that book should not be added into his borrowed list")
   void testBorrowABook_ShouldNotAddBookToBorrowedListWhenUserBorrowListHasAlreadyTwoBooks() {
@@ -112,6 +112,7 @@ class UserTest {
     //Then
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
     Assertions.assertEquals(2, user.getNumberOfBorrowedBooks());
+    Assertions.assertEquals(1, user.viewBooks().size());
   }
 
   @Test
@@ -142,6 +143,7 @@ class UserTest {
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
     Assertions.assertEquals(1, user.getNumberOfBorrowedBooks());
     Assertions.assertEquals(1, library.getNumberOfCopiesOfGivenBook(bookBorrowed));
+    Assertions.assertEquals(3, user.viewBooks().size());
   }
 
   @Test
@@ -175,6 +177,7 @@ class UserTest {
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
     Assertions.assertEquals(1, user.getNumberOfBorrowedBooks());
     Assertions.assertEquals(2, library.getNumberOfCopiesOfGivenBook(bookBorrowed));
+    Assertions.assertEquals(4, user.viewBooks().size());
   }
 
   @Test
@@ -209,6 +212,7 @@ class UserTest {
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
     Assertions.assertEquals(1, user.getNumberOfBorrowedBooks());
     Assertions.assertEquals(3, library.getNumberOfCopiesOfGivenBook(bookReturned));
+    Assertions.assertEquals(4, user.viewBooks().size());
   }
 
   @Test
@@ -243,5 +247,6 @@ class UserTest {
     Assertions.assertEquals(0, user.getNumberOfBorrowedBooks());
     Assertions.assertEquals(3, library.getNumberOfCopiesOfGivenBook(book1));
     Assertions.assertEquals(1, library.getNumberOfCopiesOfGivenBook(secondBook));
+    Assertions.assertEquals(5, user.viewBooks().size());
   }
 }
