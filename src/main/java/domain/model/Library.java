@@ -16,4 +16,15 @@ public class Library {
   public void removeBook(String book) {
     this.books.remove(book);
   }
+
+  public Integer getNumberOfCopiesOfGivenBook(String book) {
+    Integer count = 0;
+
+    for (String bk : this.books) {
+      if (bk.equals(book)) {
+        count++;
+      }
+    }
+    return count;
+  }
 }
