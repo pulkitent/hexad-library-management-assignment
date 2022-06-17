@@ -182,7 +182,7 @@ class UserTest {
       "when the user returned one of the book" +
       "then that book should be removed from his borrowed list" +
       "and library reflects updated stock of book")
-  void testReturnABook_ShouldRemoveOneCopyOfBookFromBorrowedListAndAddItToLibrary() {
+  void testReturnABook_ShouldRemoveABookFromBorrowedListAndAddItToLibrary() {
     //Given
     String book1 = "Clean-Code-by-UncleBob";
     String book1SecondCopy = "Clean-Code-by-UncleBob";
@@ -209,5 +209,39 @@ class UserTest {
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
     Assertions.assertEquals(1, user.getNumberOfBorrowedBooks());
     Assertions.assertEquals(3, library.getNumberOfCopiesOfGivenBook(bookReturned));
+  }
+
+  @Test
+  @DisplayName("Given user has two books in his borrowed list" +
+      "when the user returned both the books" +
+      "then his borrowed list is empty" +
+      "and library reflects updated stock of book")
+  void testReturnABook_ShouldRemoveBothBorrowedBooksAndAddItToLibrary() {
+    //Given
+    String book1 = "Clean-Code-by-UncleBob";
+    String book1SecondCopy = "Clean-Code-by-UncleBob";
+    String book1ThirdCopy = "Clean-Code-by-UncleBob";
+    String secondBook = "Refactoring-by-Martin";
+    String thirdBook = "Designing Data Intensive Application By Martin";
+    List<String> books = new LinkedList<>();
+    books.add(book1);
+    books.add(book1SecondCopy);
+    books.add(book1ThirdCopy);
+    books.add(secondBook);
+    books.add(thirdBook);
+    Library library = new Library(books);
+    User user = new User(library);
+    user.borrowABook(book1);
+    user.borrowABook(secondBook);
+
+    //When
+    user.returnABook(book1);
+    user.returnABook(secondBook);
+
+    //Then
+    Assertions.assertTrue(user.isBorrowedBookListEmpty());
+    Assertions.assertEquals(0, user.getNumberOfBorrowedBooks());
+    Assertions.assertEquals(3, library.getNumberOfCopiesOfGivenBook(book1));
+    Assertions.assertEquals(1, library.getNumberOfCopiesOfGivenBook(secondBook));
   }
 }
