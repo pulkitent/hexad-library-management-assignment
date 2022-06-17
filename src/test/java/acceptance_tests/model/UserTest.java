@@ -143,4 +143,37 @@ class UserTest {
     Assertions.assertEquals(1, user.getNumberOfBorrowedBooks());
     Assertions.assertEquals(1, library.getNumberOfCopiesOfGivenBook(bookBorrowed));
   }
+
+  @Test
+  @DisplayName("Given there are more than two copies of a book in library" +
+      "when a user chooses to borrow two copies of same book" +
+      "then one copy of that book should be added into his borrowed list " +
+      "and library has two copies of that book")
+  void testBorrowABook_ShouldAddOneCopyOfBookToBorrowedListWhenLibraryHasThreeCopy() {
+    //Given
+    String book1 = "Clean-Code-by-UncleBob";
+    String book1SecondCopy = "Clean-Code-by-UncleBob";
+    String book1ThirdCopy = "Clean-Code-by-UncleBob";
+    String secondBook = "Refactoring-by-Martin";
+    String thirdBook = "Designing Data Intensive Application By Martin";
+    List<String> books = new LinkedList<>();
+    books.add(book1);
+    books.add(book1SecondCopy);
+    books.add(book1ThirdCopy);
+    books.add(secondBook);
+    books.add(thirdBook);
+    Library library = new Library(books);
+    User user = new User(library);
+    List<String> actualBooksInLibrary = user.viewBooks();
+    String bookBorrowed = actualBooksInLibrary.get(0);
+
+    //When
+    user.borrowABook(bookBorrowed);
+    user.borrowABook(bookBorrowed);
+
+    //Then
+    Assertions.assertFalse(user.isBorrowedBookListEmpty());
+    Assertions.assertEquals(1, user.getNumberOfBorrowedBooks());
+    Assertions.assertEquals(2, library.getNumberOfCopiesOfGivenBook(bookBorrowed));
+  }
 }

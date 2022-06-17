@@ -31,6 +31,11 @@ public class User {
       return;
     }
 
+    if (Boolean.TRUE.equals(isGivenCopyAlreadyBorrowed(book))) {
+      logger.log(Level.WARNING, "Only one copy of a book can be borrowed");
+      return;
+    }
+
     this.library.removeBook(book);
     this.borrowedBooks.add(book);
   }
@@ -41,5 +46,9 @@ public class User {
 
   public Integer getNumberOfBorrowedBooks() {
     return this.borrowedBooks.size();
+  }
+
+  private Boolean isGivenCopyAlreadyBorrowed(String book) {
+    return this.borrowedBooks.contains(book);
   }
 }
