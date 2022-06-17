@@ -18,11 +18,10 @@ class UserTest {
   @DisplayName("Given there are no books in library" +
       "when a user views a book" +
       "then user sees an empty library")
-  void testShowBooks_ShouldReturnEmptyListOfBooksWhenLibraryIsEmpty() {
+  void testShowBooks_ShouldReturnEmptyListWhenLibraryIsEmpty() {
     //Given
-    List<String> expectedEmptyBooksList = EMPTY_LIST;
-    Library library = new Library(expectedEmptyBooksList);
-    User user = new User(library, EMPTY_LIST);
+    Library library = new Library(EMPTY_LIST);
+    User user = new User(library);
 
     //When
     List<String> actualBooks = user.viewBooks();
@@ -32,14 +31,14 @@ class UserTest {
   }
 
   @Test
-  @DisplayName("Given there are books in library" +
-      "when a user views a book" +
-      "then user sees the list of books")
+  @DisplayName("Given there are 2 books in library" +
+      "when a user views the books" +
+      "then user sees the list of books in the library")
   void testShowBooks_ShouldReturnTwoBooksWhenLibraryHasTwoBooks() {
     //Given
-    List<String> expectedBooks = Arrays.asList("Clean-Code-by-UncleBob", "Refactoring-by-Martin");
-    Library library = new Library(expectedBooks);
-    User user = new User(library, EMPTY_LIST);
+    List<String> expectedBooksInLibrary = Arrays.asList("Clean-Code-by-UncleBob", "Refactoring-by-Martin");
+    Library library = new Library(expectedBooksInLibrary);
+    User user = new User(library);
 
     //When
     List<String> actualBooks = user.viewBooks();
@@ -47,8 +46,8 @@ class UserTest {
     //Then
     Assertions.assertNotNull(actualBooks);
     Assertions.assertEquals(2, actualBooks.size());
-    Assertions.assertEquals(expectedBooks.get(0), actualBooks.get(0));
-    Assertions.assertEquals(expectedBooks.get(1), actualBooks.get(1));
+    Assertions.assertEquals(expectedBooksInLibrary.get(0), actualBooks.get(0));
+    Assertions.assertEquals(expectedBooksInLibrary.get(1), actualBooks.get(1));
   }
 
   @Test
@@ -57,9 +56,8 @@ class UserTest {
       "then no book should be added into his borrowed list")
   void testBorrowABook_ShouldNotAddBookToBorrowedListWhenLibraryIsEmpty() {
     //Given
-    List<String> expectedEmptyBooksList = EMPTY_LIST;
-    Library library = new Library(expectedEmptyBooksList);
-    User user = new User(library, EMPTY_LIST);
+    Library library = new Library(EMPTY_LIST);
+    User user = new User(library);
 
     //When
     user.borrowABook("clean-code");
@@ -76,43 +74,40 @@ class UserTest {
     //Given
     String book = "Clean-Code-by-UncleBob";
     String anotherBook = "Refactoring-by-Martin";
-    List<String> expectedBooks = new LinkedList<>();
-    expectedBooks.add(book);
-    expectedBooks.add(anotherBook);
-    Library library = new Library(expectedBooks);
-    User user = new User(library, new LinkedList<>());
+    List<String> books = new LinkedList<>();
+    books.add(book);
+    books.add(anotherBook);
+    Library library = new Library(books);
+    User user = new User(library);
     List<String> actualBooksInLibrary = user.viewBooks();
 
     //When
     user.borrowABook(actualBooksInLibrary.get(0));
-
 
     //Then
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
   }
 
   @Test
-  @DisplayName("Given there are 2 books in library and user borrow limit is reached" +
-      "when a user chose to borrow a book " +
-      "then that book should not be added into his borrow list")
+  @DisplayName("Given there are 3 books in library and user borrow limit is reached" +
+      "when a user chooses to borrow a book " +
+      "then that book should not be added into his borrowed list")
   void testBorrowABook_ShouldNotAddBookToBorrowedListWhenUserBorrowListHasAlreadyTwoBooks() {
     //Given
     String book = "Clean-Code-by-UncleBob";
-    String anotherBook = "Refactoring-by-Martin";
-    String thirdBook = "Desigining Data Intensive Application By Martin";
-    List<String> expectedBooks = new LinkedList<>();
-    expectedBooks.add(book);
-    expectedBooks.add(anotherBook);
-    expectedBooks.add(thirdBook);
-    List<String> borrowList = new LinkedList<>();
-    borrowList.add(book);
-    borrowList.add(anotherBook);
-    Library library = new Library(expectedBooks);
-    User user = new User(library, borrowList);
-    List<String> actualBooksInLibrary = user.viewBooks();
+    String secondBook = "Refactoring-by-Martin";
+    String thirdBook = "Designing Data Intensive Application By Martin";
+    List<String> books = new LinkedList<>();
+    books.add(book);
+    books.add(secondBook);
+    books.add(thirdBook);
+    Library library = new Library(books);
+    User user = new User(library);
+    user.borrowABook(book);
+    user.borrowABook(secondBook);
 
     //When
-    user.borrowABook(actualBooksInLibrary.get(2));
+    user.borrowABook(thirdBook);
 
     //Then
     Assertions.assertFalse(user.isBorrowedBookListEmpty());
@@ -121,22 +116,22 @@ class UserTest {
 
   @Test
   @DisplayName("Given there are more than one copy of a book in library" +
-      "when a user chose to borrow a book" +
-      "then one copy of that book should not be added into his borrow list " +
+      "when a user chooses to borrow a book" +
+      "then one copy of that book should be added into his borrowed list " +
       "and library has at least one copy")
   void testBorrowABook_ShouldAddBookToBorrowedListWhenLibraryHasMoreThanOneCopy() {
     //Given
     String book1 = "Clean-Code-by-UncleBob";
     String book1AnotherCopy = "Clean-Code-by-UncleBob";
-    String anotherBook = "Refactoring-by-Martin";
-    String thirdBook = "Desigining Data Intensive Application By Martin";
+    String secondBook = "Refactoring-by-Martin";
+    String thirdBook = "Designing Data Intensive Application By Martin";
     List<String> books = new LinkedList<>();
     books.add(book1);
     books.add(book1AnotherCopy);
-    books.add(anotherBook);
+    books.add(secondBook);
     books.add(thirdBook);
     Library library = new Library(books);
-    User user = new User(library, new LinkedList<>());
+    User user = new User(library);
     List<String> actualBooksInLibrary = user.viewBooks();
     String bookBorrowed = actualBooksInLibrary.get(0);
 

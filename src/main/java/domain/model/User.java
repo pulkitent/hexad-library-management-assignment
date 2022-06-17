@@ -1,5 +1,6 @@
 package domain.model;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,9 +11,9 @@ public class User {
 
   private static final Logger logger = Logger.getLogger(User.class.getName());
 
-  public User(Library library, List<String> borrowedBooks) {
+  public User(Library library) {
     this.library = library;
-    this.borrowedBooks = borrowedBooks;
+    this.borrowedBooks = new LinkedList<>();
   }
 
   public List<String> viewBooks() {
