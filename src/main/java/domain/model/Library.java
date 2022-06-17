@@ -27,4 +27,8 @@ public class Library {
     }
     return count;
   }
+
+  public void addBook(String book) {
+    this.books.add(book);
+  }
 }

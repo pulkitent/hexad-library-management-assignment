@@ -176,4 +176,38 @@ class UserTest {
     Assertions.assertEquals(1, user.getNumberOfBorrowedBooks());
     Assertions.assertEquals(2, library.getNumberOfCopiesOfGivenBook(bookBorrowed));
   }
+
+  @Test
+  @DisplayName("Given user has two books in his borrowed list" +
+      "when the user returned one of the book" +
+      "then that book should be removed from his borrowed list" +
+      "and library reflects updated stock of book")
+  void testReturnABook_ShouldRemoveOneCopyOfBookFromBorrowedListAndAddItToLibrary() {
+    //Given
+    String book1 = "Clean-Code-by-UncleBob";
+    String book1SecondCopy = "Clean-Code-by-UncleBob";
+    String book1ThirdCopy = "Clean-Code-by-UncleBob";
+    String secondBook = "Refactoring-by-Martin";
+    String thirdBook = "Designing Data Intensive Application By Martin";
+    List<String> books = new LinkedList<>();
+    books.add(book1);
+    books.add(book1SecondCopy);
+    books.add(book1ThirdCopy);
+    books.add(secondBook);
+    books.add(thirdBook);
+    Library library = new Library(books);
+    User user = new User(library);
+    List<String> actualBooksInLibrary = user.viewBooks();
+    String bookReturned = actualBooksInLibrary.get(0);
+    user.borrowABook(book1);
+    user.borrowABook(secondBook);
+
+    //When
+    user.returnABook(bookReturned);
+
+    //Then
+    Assertions.assertFalse(user.isBorrowedBookListEmpty());
+    Assertions.assertEquals(1, user.getNumberOfBorrowedBooks());
+    Assertions.assertEquals(3, library.getNumberOfCopiesOfGivenBook(bookReturned));
+  }
 }
