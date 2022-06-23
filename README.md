@@ -45,9 +45,9 @@ This assignment purpose is to showcase my clean code & best engineering practice
 
 **1. User can view books in library**
 
-     Given, there are no books in the library
-     When, I view the books in the library
-     Then, I see an empty library
+    Given, there are no books in the library
+    When, I view the books in the library
+    Then, I see an empty library
     
     Given, there are books in the library
     When, I view the books in the library
